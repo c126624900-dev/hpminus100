@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的雷霆網頁作業（美化版）</title>
+    <style>
+        /* [核心設定] 改用專業字體與預設背景 */
+        body { 
+            font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            background-color: #0d1b2a; /* 加上淺灰色底色，讓內容區塊更突顯 */
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* [佈局配置] 內容容器置中 */
+        .page-container {
+            max-width: 960px; /* 電腦版最大寬度 */
+            margin: 0 auto; /* 置中 */
+            padding: 40px; /* 增加內容四週的留白 */
+			
+            background-color: #f0f3f5; /* 內容底色設為純白 */
+            border-radius: 12px; /* 圓角 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 加上陰影增加層次感 */
+        }
+
+        /* 通用文字置中類別 (建議改用這個，不要用 <center>) */
+        .text-center {
+            text-align: center !important;
+        }
+
+        /* [圖片、圖表樣式] 加上圓角與陰影，並用 margin: 0 auto 讓圖片徹底置中 */
+        img {
+            max-width: 100%; 
+            height: auto; 
+            display: block;
+            margin: 0 auto 30px auto; /* 上下 0/30px，左右 auto 自動置中 */
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+
+        .video-container, #myPlot { 
+            max-width: 100%; 
+            height: auto; 
+            display: block;
+            border-radius: 8px; /* 圓角 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 輕微陰影 */
+            margin-bottom: 30px;
+        }
+
+        /* [標題與段落] 專業顏色與精細間距 */
+        h1 {
+            font-size: 36px;
+            color: #2c3e50; /* 選用深藍色標題 */
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #7f8c8d; /* 段落文字變灰色，看起來更專業 */
+            margin-bottom: 2em;
+        }
+
+        h2 {
+            font-size: 26px;
+            color: #34495e;
+            margin-top: 40px; /* 主題間隔 */
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db; /* 藍色底裝飾線 */
+            padding-bottom: 8px;
+        }
+
+        /* [超連結樣式] 滑鼠滑過漸變 */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style-type: square; /* 清單符號改為方形 */
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* [YouTube 影片 RWD] */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 比例容器 */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        /* [Plotly 圖表 RWD] 控制大小不跑版 */
+        #myPlot {
+            max-width: 700px;
+            margin: 0 auto 30px auto; /* 圖表居中 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 把原本的內容都放到這一個容器 Class 內 -->
+    <div class="page-container">
+        
+        <h1 class="text-center">歡迎來到我的網站</h1>
+        <h2>史上最牛逼學校校徽(假台大)</h2>
+        
+        <!-- 圖片 (透過 CSS margin: 0 auto 達成完美置中) -->
+        <img src="unnamed.png" alt="nitama" width="1000" height="800">
+        
+        <h1 class="text-center">頭好癢感覺要長腦子了RRR</h1>
+        <p class="text-center">這是我用心肝跟腦製作的作業。</p>
+
+        <h2>值得你一看的"史"詩級電影(一定要看!!!)</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/u0BpB3uJ3tQ?&start=1020" 
+                    title="YouTube video player" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+
+        <h2>統計圖表</h2>
+        <div id="myPlot"></div>
+
+        <h2>同學網站連結</h2>
+        <ul>
+            <li><a href="https://giohrtgesb.github.io/net-homework/" target="_blank">楊菘閔(史上最牛逼班代)的網站</a></li>
+            <li><a href="http://同學B的網址" target="_blank">同學B的網站</a></li>
+            <li><a href="http://同學C的網址" target="_blank">同學C的網站</a></li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        const xArray = ["Italy", "France", "Spain", "USA", "Argentina"];
+        const yArray = [55, 49, 44, 24, 15];
+
+        const data = [{
+          x: xArray,
+          y: yArray,
+          type: "bar",
+          marker: { color: "#3498db" } /* 改成專業的藍色 */
+        }];
+
+        const layout = { 
+            title: { 
+                text: "World Wide Wine Production",
+                font: { size: 20 }
+            },
+            responsive: true
+        };
+
+        Plotly.newPlot("myPlot", data, layout, { responsive: true });
+    </script>
+</body>
+</html>
