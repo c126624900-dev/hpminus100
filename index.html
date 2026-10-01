@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的雷霆網頁作業（美化版）</title>
     <style>
+        /* [平滑捲動設定] 讓畫面跳轉時會有滑動效果 */
+        html {
+            scroll-behavior: smooth;
+        }
+
         /* [核心設定] 改用專業字體與預設背景 */
         body { 
             font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
             font-size: 16px;
             line-height: 1.8;
             color: #333;
-            background-color: #0d1b2a; /* 加上淺灰色底色，讓內容區塊更突顯 */
+            background-color: #0d1b2a; /* 深海藍外圍背景 */
             margin: 0;
             padding: 20px;
         }
@@ -21,60 +26,81 @@
             max-width: 960px; /* 電腦版最大寬度 */
             margin: 0 auto; /* 置中 */
             padding: 40px; /* 增加內容四週的留白 */
-			
-            background-color: #f0f3f5; /* 內容底色設為純白 */
+            background-color: #ffffff; /* 內容底色設為純白 */
             border-radius: 12px; /* 圓角 */
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* 加上陰影增加層次感 */
         }
 
-        /* 通用文字置中類別 (建議改用這個，不要用 <center>) */
+        /* [頂部固定/快速跳轉選單] */
+        .nav-menu {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            z-index: 100;
+        }
+
+        .nav-menu a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background-color: #edf2f7;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            background-color: #3498db;
+            color: #ffffff;
+        }
+
+        /* 通用文字置中類別 */
         .text-center {
             text-align: center !important;
         }
 
-        /* [圖片、圖表樣式] 加上圓角與陰影，並用 margin: 0 auto 讓圖片徹底置中 */
+        /* [圖片、圖表樣式] */
         img {
             max-width: 100%; 
             height: auto; 
             display: block;
-            margin: 0 auto 30px auto; /* 上下 0/30px，左右 auto 自動置中 */
+            margin: 0 auto 30px auto;
             border-radius: 8px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
         }
 
-        .video-container, #myPlot { 
-            max-width: 100%; 
-            height: auto; 
-            display: block;
-            border-radius: 8px; /* 圓角 */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 輕微陰影 */
-            margin-bottom: 30px;
-        }
-
-        /* [標題與段落] 專業顏色與精細間距 */
+        /* [標題與段落] */
         h1 {
             font-size: 36px;
-            color: #2c3e50; /* 選用深藍色標題 */
+            color: #2c3e50;
             margin-top: 0;
             margin-bottom: 15px;
         }
 
         p {
             font-size: 18px;
-            color: #7f8c8d; /* 段落文字變灰色，看起來更專業 */
+            color: #7f8c8d;
             margin-bottom: 2em;
         }
 
         h2 {
             font-size: 26px;
             color: #34495e;
-            margin-top: 40px; /* 主題間隔 */
+            margin-top: 40px;
             margin-bottom: 15px;
-            border-bottom: 2px solid #3498db; /* 藍色底裝飾線 */
+            border-bottom: 2px solid #3498db;
             padding-bottom: 8px;
+            scroll-margin-top: 70px; /* 防止被頂部選單遮住標題 */
         }
 
-        /* [超連結樣式] 滑鼠滑過漸變 */
+        /* [超連結樣式] */
         a {
             color: #3498db;
             text-decoration: none;
@@ -88,7 +114,7 @@
         }
 
         ul {
-            list-style-type: square; /* 清單符號改為方形 */
+            list-style-type: square;
             padding-left: 20px;
         }
 
@@ -100,9 +126,12 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 比例容器 */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
 
         .video-container iframe {
@@ -110,28 +139,35 @@
             top: 0; left: 0; width: 100%; height: 100%; border: 0;
         }
 
-        /* [Plotly 圖表 RWD] 控制大小不跑版 */
+        /* [Plotly 圖表 RWD] */
         #myPlot {
             max-width: 700px;
-            margin: 0 auto 30px auto; /* 圖表居中 */
+            margin: 0 auto 30px auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- 把原本的內容都放到這一個容器 Class 內 -->
     <div class="page-container">
         
-        <h1 class="text-center">歡迎來到我的網站</h1>
-        <h2>史上最牛逼學校校徽(假台大)</h2>
-        
-        <!-- 圖片 (透過 CSS margin: 0 auto 達成完美置中) -->
-        <img src="unnamed.png" alt="nitama" width="1000" height="800">
-        
-        <h1 class="text-center">頭好癢感覺要長腦子了RRR</h1>
-        <p class="text-center">這是我用心肝跟腦製作的作業。</p>
+        <!-- 頂部快速跳轉選單 -->
+        <nav class="nav-menu">
+            <a href="#section-top">首頁頂部</a>
+            <a href="#section-video">推薦電影</a>
+            <a href="#section-plot">統計圖表</a>
+            <a href="#section-links">同學網站</a>
+        </nav>
 
-        <h2>值得你一看的"史"詩級電影(一定要看!!!)</h2>
+        <div id="section-top">
+            <h1 class="text-center">歡迎來到我的網站</h1>
+            <h2>史上最牛逼學校校徽(假台大)</h2>
+            <img src="unnamed.png" alt="nitama" width="1000" height="800">
+            
+            <h1 class="text-center">頭好癢感覺要長腦子了RRR</h1>
+            <p class="text-center">這是我用心肝跟腦製作的作業。</p>
+        </div>
+
+        <h2 id="section-video">值得你一看的"史"詩級電影(一定要看!!!)</h2>
         <div class="video-container">
             <iframe src="https://www.youtube.com/embed/u0BpB3uJ3tQ?&start=1020" 
                     title="YouTube video player" 
@@ -141,14 +177,14 @@
             </iframe>
         </div>
 
-        <h2>統計圖表</h2>
+        <h2 id="section-plot">統計圖表</h2>
         <div id="myPlot"></div>
 
-        <h2>同學網站連結</h2>
+        <h2 id="section-links">同學網站連結</h2>
         <ul>
             <li><a href="https://giohrtgesb.github.io/net-homework/" target="_blank">楊菘閔(史上最牛逼班代)的網站</a></li>
-            <li><a href="http://同學B的網址" target="_blank">同學B的網站</a></li>
-            <li><a href="http://同學C的網址" target="_blank">同學C的網站</a></li>
+            <li><a href="https://jinzuha.github.io/web/index.html" target="_blank">許秉焱的網站</a></li>
+            <li><a href="https://bm-architect.wixsite.com/bmportfilio" target="_blank">王博群的網站</a></li>
         </ul>
     </div>
 
@@ -161,7 +197,7 @@
           x: xArray,
           y: yArray,
           type: "bar",
-          marker: { color: "#3498db" } /* 改成專業的藍色 */
+          marker: { color: "#3498db" }
         }];
 
         const layout = { 
